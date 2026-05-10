@@ -1,0 +1,21 @@
+# Datasets (too large for GitHub, >100MB limit)
+datasets/Data/
+datasets/dataset/
+datasets/OLI2MSI/
+datasets/*.rar
+datasets/*.zip
+
+# Temporary files
+_tmp_ppt/
+~$*.pptx
+
+# Python
+__pycache__/
+*.pyc
+
+# Claude local config
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
