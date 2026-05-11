@@ -1,0 +1,174 @@
+\documentclass[11pt,a4paper]{ctexart}
+
+% ==== 页面设置 ====
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue!60!black
+}
+
+% ==== 页眉页脚 ====
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 阅读报告}
+\fancyhead[R]{\small 钟兴炜\quad chungxw@whu.edu.cn}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ==== 标题信息 ====
+\title{{\bfseries Image Generation Models: A Technical History\\[3mm] 阅读报告}}
+\author{%
+    \large 钟兴炜\\[2mm]
+    \normalsize chungxw@whu.edu.cn\\[1mm]
+    \small 武汉大学
+}
+\date{\small 2026年5月11日}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\vspace{3mm}
+\begin{center}
+\rule{0.7\textwidth}{0.5pt}
+\end{center}
+\vspace{3mm}
+
+% ============================================================
+\section{论文基本信息}
+
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+论文标题  & Image Generation Models: A Technical History \\
+作者      & Rouzbeh Shirvani \quad (\texttt{rouzbeh.asghari@gmail.com}) \\
+发表信息  & arXiv: 2603.07455v2 [cs.CV]，2026年3月29日 \\
+类型 / 篇幅 & 综述 (Survey)，55页，168篇参考文献 \\
+所属领域  & 计算机视觉 $\cdot$ 深度学习 $\cdot$ 图像生成 \\
+\bottomrule
+\end{tabularx}
+
+% ============================================================
+\section{内容概述}
+
+本文是一篇系统性的图像生成模型技术综述，按时间顺序梳理了过去十年从 VAE、GAN、Normalizing Flows、自回归/Transformer 模型到扩散模型、Flow Matching，以及视频生成和伪造检测的完整技术演进路径。全文共10章，各章要点如下：
+
+\begin{enumerate}[leftmargin=*, itemsep=2pt]
+    \item[\S1] \textbf{引言}：指出图像生成领域文献碎片化，缺乏跨模型族的统一技术性综述，明确综述目标与范围。
+    \item[\S2] \textbf{VAE}：从 ELBO 推导与重参数化技巧出发，讨论 KL Collapse 与 $\beta$-VAE 解决方案，介绍 PixelVAE、条件 VAE (CVAE)、IWAE、DRAW、NVAE 等变体。VAE 优势在于可解释性与可控性，局限是模糊重建。
+    \item[\S3] \textbf{GAN}：从 Goodfellow 原始 GAN 到 DCGAN、WGAN/WGAN-GP 的训练稳定性改进，涵盖条件 GAN (CGAN/AC-GAN)、StyleGAN v1--v3 的渐进式生成与风格解耦，StackGAN/AttnGAN 的文本到图像生成，以及 SRGAN 超分辨率应用。
+    \item[\S4] \textbf{Normalizing Flows}：基于变量替换公式与可逆映射，详述 NICE、Real NVP 的仿射耦合、Glow 的 $1\times1$ 可逆卷积以及 MAF、IAF 等变体。优势在于精确似然与一步采样，但在复杂高分辨率生成上落后于扩散模型。
+    \item[\S5] \textbf{自回归与 Transformer}：从 PixelRNN/PixelCNN 逐像素生成，到 Image GPT 的自注意力替代卷积、VQ-VAE/VQ-GAN 的离散潜在空间、DALL-E 文本到图像、MaskGIT 并行解码、Muse 双尺度 tokenizer、Parti (20B 参数) 的缩放实验。
+    \item[\S6] \textbf{扩散模型}：从 Sohl-Dickstein 的热力学启发到 DDPM 噪声预测重参数化与 UNet 架构、DDIM 加速采样、条件扩散 (classifier / classifier-free guidance)、LDM/Stable Diffusion 的潜在空间操作、DiT 的 Transformer 骨干、DALL-E 2/Imagen/DALL-E 3/SDXL 等大规模系统。
+    \item[\S7] \textbf{Rectified Flow 与 Flow Matching}：基于连续 Normalizing Flow 的 ODE 框架。Rectified Flow 通过直线插值与 Reflow 实现少量步采样；Flow Matching 利用条件概率路径回归向量场，在最优传输路径下以更少 NFE 达到更低 FID。
+    \item[\S8] \textbf{视频生成}：从 VGAN/MoCoGAN 的 GAN 方案，到 VideoGPT 的 VQ-VAE + 自回归 Transformer，再到视频扩散模型 (Imagen Video / Stable Video Diffusion / Lumiere / Make-A-Video)。
+    \item[\S9] \textbf{伪造检测与社会影响}：讨论 deepfake 危害、检测方法 (眨眼检测、频谱伪影、DIRE 扩散重建误差)、基准数据集 (FaceForensics++、DFDC)、水印技术 (Stable Signature，48-bit 签名，误检率 $1/10^9$)。
+    \item[\S10] \textbf{总结}：回顾各模型演进，指出未来方向——更少步生成、时序与 3D 一致性、条件控制、水印与负责任部署。
+\end{enumerate}
+
+% ============================================================
+\section{主要贡献}
+
+\begin{enumerate}[leftmargin=*, itemsep=2pt]
+    \item \textbf{首次提供跨模型族的统一技术综述。}
+    不同于仅聚焦单一模型族的综述，本文覆盖 VAE、GAN、Flow、Autoregressive、Diffusion、Flow Matching 等所有主流生成模型，对每种模型提供从数学公式到训练算法的完整技术 walkthrough。
+
+    \item \textbf{技术细节与训练流程并重。}
+    对每种模型给出：(i) 底层目标函数与数学推导，(ii) 架构设计选择，(iii) 算法级训练步骤（以伪代码 Box 形式呈现，全文共12个），(iv) 常见失败模式与优化技巧。对工程实现具有直接参考价值。
+
+    \item \textbf{覆盖最新进展。}
+    包含 2024--2026 年最新工作，如 Rectified Flow/Flow Matching 驱动的现代生成系统、Stable Video Diffusion、Lumiere 等，追踪了从扩散模型到 Flow-based 范式的技术转变。
+
+    \item \textbf{兼顾社会责任维度。}
+    专设章节讨论 deepfake 检测、频率域伪影、水印技术等防御手段，技术综述与社会影响并重，在同类综述中较为少见。
+
+    \item \textbf{清晰的技术演进叙事。}
+    按时间顺序组织，帮助读者理解各模型为何出现、解决了什么问题、遗留了什么局限，形成完整的认知框架。
+\end{enumerate}
+
+% ============================================================
+\section{各模型核心对比}
+
+\begin{table}[htbp]
+\centering
+\caption{主流图像生成模型对比}
+\label{tab:comparison}
+\small
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+模型族 & 训练方式 & 生成质量 & 采样速度 & 主要局限 \\
+\midrule
+VAE              & ELBO 最大化     & 中等 (模糊)   & 一步 (快)    & 后验坍塌、模糊重建 \\
+GAN              & 对抗博弈        & 高 (清晰)     & 一步 (快)    & 模式坍塌、训练不稳定 \\
+Normalizing Flow & 精确对数似然    & 中等          & 一步 (快)    & 维度受限、高分辨率困难 \\
+自回归/Transformer & 最大似然      & 高            & 逐 token (慢) & $O(n^2)$ 注意力、顺序依赖 \\
+扩散模型 (DDPM)  & 噪声预测 MSE    & 很高          & 数百$\sim$千步 (慢) & 采样步骤多、耗时长 \\
+Rectified Flow / FM & 向量场回归 MSE & 很高          & 少量步 (快)   & 边界条件敏感 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{值得关注的亮点}
+
+\begin{enumerate}[leftmargin=*, itemsep=2pt]
+    \item \textbf{数学推导完整。}
+    VAE 从 ELBO 到重参数化，GAN 从 min-max 到 WGAN 的 Wasserstein 距离，扩散模型从马尔可夫链到 DDIM 的确定性采样——每个公式都有上下文解释，适合作为教学参考资料。
+
+    \item \textbf{算法步骤清晰。}
+    文中包含12个 Box，以伪代码形式给出 CVAE、Normalizing Flow、DDPM、DALL-E 2、Rectified Flow、Flow Matching、Stable Video Diffusion 等模型的完整训练/推理流程，可直接指导复现。
+
+    \item \textbf{模型间联系被揭示。}
+    例如 VQ-VAE 是扩散模型进入潜在空间的关键使能技术；DDPM 的重参数化技巧（预测噪声而非均值）是其工程可行性的关键；Classifier-free guidance 从标签条件推广到文本条件直接催生了 GLIDE 和 Stable Diffusion。
+
+    \item \textbf{范式转移信号被捕捉。}
+    论文敏锐地捕捉到从扩散模型到 Flow Matching 的转变趋势——Rectified Flow 和 Flow Matching 提供更干净的连续时间动态、更少的采样步数和更好的训练稳定性，正成为下一代生成系统的基础。
+
+    \item \textbf{安全性讨论务实。}
+    具体介绍了 DIRE（扩散重建误差检测）、频谱伪影分析（上卷积引入的棋盘格频率特征）、Stable Signature 水印等技术方案，而非泛泛而谈。
+\end{enumerate}
+
+% ============================================================
+\section{读后评价}
+
+\subsection*{优点}
+
+\begin{enumerate}[leftmargin=*, itemsep=1pt]
+    \item 技术深度与广度平衡得当，公式推导严谨但不过度晦涩，适合作为入门到进阶的桥梁读物。
+    \item 各章节 Conclusion 和末章 Final Conclusion 提供精炼总结，可直接引用。
+    \item 数学符号统一、Box 式训练流程可操作性强，便于复现。
+    \item 引用全面（168篇），涵盖各方向关键论文。
+\end{enumerate}
+
+\subsection*{不足}
+
+\begin{enumerate}[leftmargin=*, itemsep=1pt]
+    \item 几乎没有实验结果对比——综述未提供各模型在标准 benchmark 上的 FID/IS 等量化对比表，缺少定量比较是明显短板。
+    \item 各模型之间的内在理论联系讨论不够深入（如 score-based SDE 统一框架），更多是按时间线的并列叙述。
+    \item 实验架构多为文字描述，缺少架构图对直观理解有一定影响。
+    \item 对最新闭源商业模型（如 DALL-E 3、Sora 等）的技术细节披露有限。
+\end{enumerate}
+
+\subsection*{对个人研究的启发}
+
+本文为红外图像超分辨率研究提供了清晰的模型选型参考——扩散/Flow Matching 模型在图像重建质量和多样性方面优于 GAN 和 VAE，Flow Matching 正成为更高效的选择；潜在空间操作和条件控制机制可直接借鉴用于红外 SR 的退化建模与重建。
+
+\vspace{8mm}
+
+\begin{center}
+\rule{0.5\textwidth}{0.4pt}\\[3mm]
+{\small 钟兴炜 \quad$\cdot$\quad chungxw@whu.edu.cn \quad$\cdot$\quad 武汉大学 \\[1mm]
+  2026年5月11日}
+\end{center}
+
+\end{document}

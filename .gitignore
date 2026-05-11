@@ -2,6 +2,8 @@
 datasets/Data/
 datasets/dataset/
 datasets/OLI2MSI/
+datasets/CIDIS-dataset-main/
+datasets/dataset_CIDIS_guided_x8x16/
 datasets/*.rar
 datasets/*.zip
 
